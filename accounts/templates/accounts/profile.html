@@ -2,20 +2,24 @@
 {% load bootstrap4 %}
 
 {% block app %}
-  <h2 class="text-center">프로필</h2>
+  <h2 class="text-center">{{ person.username }}</h2>
   <hr class="mb-4">
-
-  <h5>{{ person.username }}</h5>
 
   <div class="d-flex">
     <div class="mr-3">팔로잉 수: {{ person.followings.count }}명</div>
     <div class="mr-3">팔로워 수: {{ person.followers.count }}명</div>
-    {% comment %} {% if not request.user == person %}
+    {% if not request.user == person %}
       {% if request.user in person.followers.all %}
-      <div class="text-danger"><a href="{% url 'accounts:follow' person.pk %}">팔로우 취소</a></div>
+      <div class="text-danger"><a href="{% url 'accounts:follow' person.username %}">팔로우 취소</a></div>
       {% else %}
-      <div class="text-danger"><a href="{% url 'accounts:follow' person.pk %}">팔로우</a></div>
+      <div class="text-danger"><a href="{% url 'accounts:follow' person.username %}">팔로우</a></div>
       {% endif %}
-    {% endif %} {% endcomment %}
+    {% endif %}
   </div>
+  <hr>
+  <div class="d-flex">
+    <div class="mr-3">좋아요한 영화: {{person.like_reviews.count}}개</div>
+    <div class="mr-3">작성한 리뷰 수: {{person.reviews.count}}개</div>
+  </div>
+
 {% endblock %}
