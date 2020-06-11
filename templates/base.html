@@ -6,10 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Movie Flex</title>
   {% bootstrap_css %}
+
+  <!-- Font-Awesome -->
   <script src="https://kit.fontawesome.com/3b9e4b0515.js" crossorigin="anonymous"></script>
+  <!-- Vue, Axios -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
-
   <!-- NavBar -->
   {% include '_nav.html' %}
   {% bootstrap_messages %}
@@ -24,6 +28,7 @@
 
   {% block script %}
   {% endblock %}
+
   {% bootstrap_javascript jquery='full' %}
 </body>
 </html>

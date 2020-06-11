@@ -1,10 +1,16 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Movie Flex</a>
+  <a class="navbar-brand" href="{% url 'movies:index' %}">Movie Flex</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <!-- 나중에 ORM Filter 통해서 완성해야 함 (영화찾기) -->
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="영화를 검색하세요." aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
     <ul class="navbar-nav ml-auto">
       <!-- Navbar 로그인 되있을 때, 아닐때 분기 처리 -->
       {% if request.user.is_authenticated %}
@@ -29,11 +35,4 @@
         </li>
       {% endif %}
     </ul>
-
-    <!-- 나중에 ORM Filter 통해서 완성해야 함 (영화찾기) -->
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="영화를 검색하세요." aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-  </div>
 </nav>

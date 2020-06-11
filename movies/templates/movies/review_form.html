@@ -2,7 +2,11 @@
 {% load bootstrap4 %}
 
 {% block app %}
-  <h1 class="display-5 text-center mt-3">리뷰작성</h1>
+  {% if request.resolver_match.url_name == 'review_create' %}
+  <h1 class="display-5 text-center mt-3">리뷰 작성</h1>
+  {% else %}
+  <h1 class="display-5 text-center mt-3">리뷰 수정</h1>
+  {% endif %}
 
 
   <form action="" method="post" class="form">

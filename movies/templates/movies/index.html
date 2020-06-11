@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 
 {% block app %}
-  <h1> 영화 목록 </h1>
+  <h1 class="text-center mt-3"> 영화 목록 </h1>
   <hr>
+  <div class="row">
   {% for movie in movies %}
-    <img src="{{ movie.poster }}" style="width: 300px;"> | {{ movie.title }}
-    <hr>
+    <div class="card col-12 col-sm-6 col-lg-4 col-xl-3" style="width: 18rem;">
+      <a href="{% url 'movies:detail' movie.pk %}"><img src="{{ movie.poster }}" class="card-img-top" alt="..."></a>
+    </div>
   {% endfor %}
+  </div>
 {% endblock %}

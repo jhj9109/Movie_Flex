@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block app %}
+  <div class="d-flex">
+    <h1 class="mx-auto">{{ review.title }}</h1>
+    {% if review.user == request.user %}
+      <div class="p-1">
+        <a href="{% url 'movies:review_update' movie.pk review.pk %}">
+          <input class="btn btn-primary" type="submit" value="수정">
+        </a>
+        <input class="btn btn-danger" type="submit" value="삭제">
+      </div>
+    {% endif %}
+  </div>
+
+
+  <hr>
+  내용 : {{ review.content }}<br>
+  작성 : {{ review.created_at }}
+  <hr>
+  <h3>댓글 목록()</h3>
+  {% for comment in comments %}
+    <p> {{ comment.user }} : {{ comment.content }} </p>
+  {% endfor %}
+
+
+{% endblock  %}
