@@ -1,1 +1,10 @@
 {% extends 'base.html' %}
+
+{% block app %}
+  <h1> 영화 목록 </h1>
+  <hr>
+  {% for movie in movies %}
+    <img src="{{ movie.poster }}" style="width: 300px;"> | {{ movie.title }}
+    <hr>
+  {% endfor %}
+{% endblock %}

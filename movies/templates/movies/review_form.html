@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block app %}
+  <h1 class="display-5 text-center mt-3">리뷰작성</h1>
+
+
+  <form action="" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+      <button type="submit" class="btn btn-primary">완료</button>
+    {% endbuttons %}
+  </form>
+{% endblock %}

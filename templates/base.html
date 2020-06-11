@@ -11,14 +11,10 @@
 
   <!-- NavBar -->
   {% include '_nav.html' %}
-  {% if request.user.username %}
-    <p>{{ request.user.username }}님 로그인 되었습니다</p>
-  {% else %}
-    <p>비로그인 상태입니다</p>
-  {% endif %}
-  <div id="app">
-    {% block app %}
+  {% bootstrap_messages %}
 
+  <div id="app" class="container">
+    {% block app %}
     {% endblock %}
   </div>
 
