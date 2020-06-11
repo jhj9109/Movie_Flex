@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block body %}
+  <h4>프로필</h4>
+  <hr class="mb-4">
+
+  <h5>{{ person.username }}</h5>
+
+  <div class="d-flex">
+    <div class="mr-3">팔로잉 수: {{ person.followings.count }}명</div>
+    <div class="mr-3">팔로워 수: {{ person.followers.count }}명</div>
+    {% comment %} {% if not request.user == person %}
+      {% if request.user in person.followers.all %}
+      <div class="text-danger"><a href="{% url 'accounts:follow' person.pk %}">팔로우 취소</a></div>
+      {% else %}
+      <div class="text-danger"><a href="{% url 'accounts:follow' person.pk %}">팔로우</a></div>
+      {% endif %}
+    {% endif %} {% endcomment %}
+  </div>
+
+{% endblock %}
