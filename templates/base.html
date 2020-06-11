@@ -11,10 +11,10 @@
 
   <!-- NavBar -->
   {% include '_nav.html' %}
+  {% bootstrap_messages %}
 
-  <div id="app">
+  <div id="app" class="container">
     {% block app %}
-
     {% endblock %}
   </div>
 
