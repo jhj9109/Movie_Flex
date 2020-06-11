@@ -6,10 +6,17 @@
     <h1 class="mx-auto">{{ review.title }}</h1>
     {% if review.user == request.user %}
       <div class="p-1">
+        <!-- 리뷰 수정 버튼 -->
         <a href="{% url 'movies:review_update' movie.pk review.pk %}">
           <input class="btn btn-primary" type="submit" value="수정">
         </a>
-        <input class="btn btn-danger" type="submit" value="삭제">
+        <!-- 리뷰 삭제 버튼 -->
+        <form action="{% url 'movies:review_delete' movie.id review.id %}" method="post" class="form">
+          {% csrf_token %}
+          {% buttons %}
+            <button type="submit" class="btn btn-danger">삭제</button>
+          {% endbuttons %}
+        </form>
       </div>
     {% endif %}
   </div>
