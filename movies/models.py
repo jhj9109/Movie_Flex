@@ -3,18 +3,22 @@ from django.conf import settings
 
 
 # 여기는 추후 영화진흥원API 통해서 DB 받아와야함.
+class Genre(models.Model):
+    name = models.CharField(max_length=50)
+
 class Movie(models.Model):
     title = models.CharField(max_length=100)
-    poster = models.URLField(max_length=1000, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    title_en = models.CharField(max_length=200)
+    overview = models.TextField()
+    release_date = models.CharField(max_length=50)
+    poster_path = models.URLField(max_length=1000, blank=True)
+    backdrop_path = models.URLField(max_length=1000, blank=True)
+    adult = models.BooleanField()
+    vote_average = models.IntegerField()
 
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies') # related : 유저가 좋아요한 영화들
     genre = models.ManyToManyField(Genre, related_name='movies')
 
-class Genre(models.Model):
-    genre_id = models.IntegerField()
-    name = models.CharField(max_length=50)
 
 class Review(models.Model):
     title = models.CharField(max_length=100)

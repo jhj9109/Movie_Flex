@@ -4,9 +4,9 @@ from .models import Movie, Review, Comment
 
 # Register your models here.
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'poster', 'created_at']
+    list_display = ['id', 'title', 'release_date']
     list_display_links = ['title']
-    list_filter = ['created_at']
+    list_filter = ['release_date']
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'content', 'created_at', 'updated_at']
