@@ -10,7 +10,11 @@ class Movie(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies') # related : 유저가 좋아요한 영화들
+    genre = models.ManyToManyField(Genre, related_name='movies')
 
+class Genre(models.Model):
+    genre_id = models.IntegerField()
+    name = models.CharField(max_length=50)
 
 class Review(models.Model):
     title = models.CharField(max_length=100)
