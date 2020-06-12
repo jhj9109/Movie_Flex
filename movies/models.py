@@ -8,6 +8,7 @@ class Movie(models.Model):
     poster = models.URLField(max_length=1000, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies') # related : 유저가 좋아요한 영화들
 
 
 class Review(models.Model):

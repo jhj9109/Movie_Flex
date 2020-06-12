@@ -5,6 +5,7 @@ from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
+from django.contrib import messages
 # from rest_framework.decorators import api_view
 
 
@@ -36,7 +37,8 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
-            return redirect(request.GET.get('next') or 'movies:index')
+            messages.success(request, '회원가입이 완료되었습니다.')
+            return redirect('movies:index')
     form = CustomUserCreationForm()
     context = {
         'form': form

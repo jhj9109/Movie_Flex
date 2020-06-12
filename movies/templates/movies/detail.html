@@ -9,6 +9,7 @@
     </div>
     <div>
       <p> {{ movie.title }} </p>
+      <a href="{% url 'movies:movie_like' movie.pk %}">좋아요</a> : {{ movie.like_users.count }}
     </div>
   </div>
   <br>
