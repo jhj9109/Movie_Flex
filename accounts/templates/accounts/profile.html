@@ -2,7 +2,7 @@
 {% load bootstrap4 %}
 
 {% block app %}
-  <h2 class="text-center">{{ person.username }}</h2>
+  <h2 class="text-center">{{ person.username }} 님의 상세페이지 입니다.</h2>
   <hr class="mb-4">
 
   <div class="d-flex">
@@ -17,9 +17,13 @@
     {% endif %}
   </div>
   <hr>
-  <div class="d-flex">
-    <div class="mr-3">좋아요한 영화: {{person.like_movies.count}}개</div>
-    <div class="mr-3">작성한 리뷰 수: {{person.reviews.count}}개</div>
-  </div>
+
+  <div class="mr-3">작성한 리뷰 수: {{person.reviews.count}}개</div>
+  <hr>
+  <div class="mr-3">좋아요한 영화: {{person.like_movies.count}}개</div>
+    {% for movie in like_movies %}
+      <img src="{{ movie.poster }}">
+    {% endfor %}
+
 
 {% endblock %}
