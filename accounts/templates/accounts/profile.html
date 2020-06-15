@@ -4,13 +4,15 @@
 {% block app %}
   <h2 class="text-center">{{ person.username }} 님의 상세페이지 입니다.</h2>
   {% if not request.user == person %}
-    {% if request.user in person.followers.all %}
-    <div class="text-center"><a href="{% url 'accounts:follow' person.username %}"><h3><span class="badge badge-warning">팔로우 취소</span></h3></a></div>
-    {% else %}
-    <div class="text-center"><a href="{% url 'accounts:follow' person.username %}"><h3><span class="badge badge-warning">팔로우</span></h3></a></div>
-    {% endif %}
+    <div v-show="is_follow">
+      <div class="text-center"><h3 @click="follow"><span class="badge badge-warning">팔로우 취소</span></h3></div>
+    </div>
+    <div v-show="!is_follow">
+      <div class="text-center"><h3 @click="follow"><span class="badge badge-warning">팔로우</span></h3></div>
+    </div>
   {% endif %}
   <hr class="mb-4">
+
 
   <div class="d-flex">
     <!-- 팔로잉 버튼 -->
@@ -43,7 +45,7 @@
 
     <!-- 팔로우 버튼 -->
     <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal2">
-      팔로워 {{ followers.count }}
+      팔로워 $[[followers]]
     </button>
 
     <!-- Modal -->
@@ -79,4 +81,34 @@
     {% endfor %}
 
 
+{% endblock %}
+
+{% block script %}
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      delimiters: ['$[[', ']]'],
+      data: {
+        is_follow: {% if request.user in person.followers.all %} true {% else %} false {% endif %},
+        followers: {{ person.followers.count }},
+      },
+      methods: {
+        follow: function() {
+          const url = "{% url 'accounts:follow_api' person.username %}"
+          axios.get(url)
+            .then(res => {
+              if (res.data.is_follow) {
+                this.followers++
+                this.is_follow = true
+              } else {
+                this.followers--
+                this.is_follow = false
+              }
+            })
+            .catch(err => console.log(err))
+        }
+      },
+
+    })
+  </script>
 {% endblock %}

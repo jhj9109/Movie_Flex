@@ -69,3 +69,18 @@ def follow(request, username):
     else:
         person.followers.add(request.user)
     return redirect('accounts:profile', person.username)
+
+def follow_api(request, username):
+    User = get_user_model()
+    person = get_object_or_404(User, username=username) # user != person(프로필페이지 주인)
+    if person.followers.filter(username=request.user.username).exists():
+        person.followers.remove(request.user)
+        is_follow = False
+    else:
+        person.followers.add(request.user)
+        is_follow = True
+    data = {
+        'is_follow': is_follow
+    }
+    from django.http import JsonResponse
+    return JsonResponse(data)
