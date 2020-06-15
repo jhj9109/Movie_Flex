@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
-
+from django.http import JsonResponse
 
 from .models import Movie, Review, Comment
 from .forms import ReviewForm, CommentForm
@@ -141,14 +141,33 @@ def comment_delete(request, movie_pk, review_pk, comment_pk):
             return redirect('movies:review_detail', movie_pk, review_pk)
 
 # Like
+# 무비라이크 새로고침 렌더버전
+@login_required
 def movie_like(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
+
     if movie.like_users.filter(pk=request.user.pk).exists():
         movie.like_users.remove(request.user)
     else:
         movie.like_users.add(request.user)
     return redirect('movies:detail', movie_pk)
 
+@login_required
+def movie_like_api(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    if movie.like_users.filter(pk=request.user.pk).exists():
+        movie.like_users.remove(request.user)
+        is_like_movie = False
+    else:
+        movie.like_users.add(request.user)
+        is_like_movie = True
+    data = {
+        'is_like_movie': is_like_movie,
+        'count': movie.like_users.count()
+    }
+    return JsonResponse(data)
+
+@login_required
 def review_like(request, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     if review.like_users.filter(pk=request.user.pk).exists():
