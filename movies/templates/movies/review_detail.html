@@ -23,9 +23,13 @@
 
 
   <hr>
-  내용 : {{ review.content }}<br>
-  작성 : {{ review.created_at }}<br>
-  <a href="{% url 'movies:review_like' review.pk %}">좋아요</a> : {{ review.like_users.count }}
+  <p>{{ review.content }}</p>
+  <div class="d-flex">
+    <a href="{% url 'movies:review_like' review.pk %}" class="btn btn-warning">
+      좋아요 <span class="badge badge-light">{{ review.like_users.count }}</span>
+    </a>
+    <small class="ml-auto">{{ review.created_at }}</small><br>
+  </div>
   <hr>
   <h4>댓글 목록<small>({{ comments.count }})</small></h4>
   {% for comment in comments %}

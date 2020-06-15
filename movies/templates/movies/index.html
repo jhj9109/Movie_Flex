@@ -5,8 +5,8 @@
   <hr>
   <div class="row">
   {% for movie in movies %}
-    <div class="card col-12 col-sm-6 col-lg-4 col-xl-3" style="width: 18rem;">
-      <a href="{% url 'movies:detail' movie.pk %}"><img src="{{ movie.poster }}" class="card-img-top" alt="..."></a>
+    <div class="card col-12 col-sm-6 col-lg-4 col-xl-3" style="width: 18rem; height: 24rem;">
+      <a href="{% url 'movies:detail' movie.pk %}"><img src="{{ movie.poster_path }}" class="card-img-top" alt="..."></a>
     </div>
   {% endfor %}
   </div>

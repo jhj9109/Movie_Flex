@@ -22,7 +22,7 @@
   <hr>
   <div class="mr-3">좋아요한 영화: {{person.like_movies.count}}개</div>
     {% for movie in like_movies %}
-      <img src="{{ movie.poster }}">
+      <img src="{{ movie.poster_path }}" style="width: 25%; height: 25%;">
     {% endfor %}
 
 
