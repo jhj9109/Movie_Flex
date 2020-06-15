@@ -20,16 +20,26 @@
       </div>
     {% endif %}
   </div>
-
-
   <hr>
+
+  <!-- 내용 부분 -->
   <p>{{ review.content }}</p>
   <div class="d-flex">
+    <!-- 리뷰 좋아요 비동기 -->
+    <div id="review_like">
+      <span @click="reviewLike" class="btn btn-warning" style="cursor: pointer;">좋아요<span class="badge badge-light">[[ like_review ]]</span></span>
+    </div>
+    <!-- 리뷰 좋아요 새로고침 요청
     <a href="{% url 'movies:review_like' review.pk %}" class="btn btn-warning">
       좋아요 <span class="badge badge-light">{{ review.like_users.count }}</span>
     </a>
+    -->
     <small class="ml-auto">{{ review.created_at }}</small><br>
   </div>
+  <hr>
+
+
+  <!-- 댓글 부분 -->
   <hr>
   <h4>댓글 목록<small>({{ comments.count }})</small></h4>
   {% for comment in comments %}
@@ -55,6 +65,37 @@
       <button type="submit" class="btn btn-primary">댓글 작성</button>
     {% endbuttons %}
   </form>
-
-
 {% endblock  %}
+
+{% block script %}
+  <script>
+    const reviewDetail = new Vue({
+      el: '#review_like',
+      delimiters: ['[[', ']]'],
+      data: {
+        is_like_review: null,
+        like_review: {{ review.like_users.count }},
+      },
+      methods: {
+        reviewLike: function() {
+          const reviewLikeURL = "{% url 'movies:review_like_api' review.pk %}"
+          axios.get(reviewLikeURL)
+            .then(res => {
+              if (res.data.is_review_like) {
+                this.like_review++;
+                this.is_like_review = true
+              } else {
+                this.like_review--;
+                this.is_like_review = false
+              }
+            })
+        },
+        created: function () {
+          this.is_like_review = {% if request.user in review.like_users.all %} true {% else %} false {% endif %},
+          this.like_review = {{ review.like_users.count }}
+        }
+      }
+    })
+
+  </script>
+{% endblock %}

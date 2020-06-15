@@ -129,6 +129,28 @@ def comment_create(request, movie_pk, review_pk):
 
 @require_POST
 @login_required
+def comment_create_api(request, movie_pk, review_pk):
+    review = get_object_or_404(Review, pk=review_pk)
+    comments = Comment.objects.filter(review=review)
+
+    if request.user.is_authenticated:
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.review = review
+            comment.user = request.user
+            comment.save()
+        data = {
+            'comments': comments
+        }
+        return JsonResponse(data)
+    else:
+        messages.warning(request, '댓글 작성을 위해서는 로그인이 필요합니다.')
+        return redirect('accounts:login')
+
+
+@require_POST
+@login_required
 def comment_delete(request, movie_pk, review_pk, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
     if request.user.is_authenticated:
@@ -175,3 +197,19 @@ def review_like(request, review_pk):
     else:
         review.like_users.add(request.user)
     return redirect('movies:review_detail', review.movie.pk, review_pk)
+
+@login_required
+def review_like_api(request, review_pk):
+    review = get_object_or_404(Review, pk=review_pk)
+    if review.like_users.filter(pk=request.user.pk).exists():
+        review.like_users.remove(request.user)
+        is_review_like = False
+    else:
+        review.like_users.add(request.user)
+        is_review_like = True
+
+    data = {
+        'is_review_like': is_review_like,
+        'review_like_count': review.like_users.count()
+    }
+    return JsonResponse(data)
