@@ -5,10 +5,10 @@
   <h2 class="text-center">{{ person.username }} 님의 상세페이지 입니다.</h2>
   {% if not request.user == person %}
     <div v-show="is_follow">
-      <div class="text-center"><h3 @click="follow"><span class="badge badge-warning">팔로우 취소</span></h3></div>
+      <div class="text-center" style="cursor: pointer;"><h3 @click="follow"><span class="badge badge-warning">팔로우 취소</span></h3></div>
     </div>
     <div v-show="!is_follow">
-      <div class="text-center"><h3 @click="follow"><span class="badge badge-warning">팔로우</span></h3></div>
+      <div class="text-center" style="cursor: pointer;"><h3 @click="follow"><span class="badge badge-warning">팔로우</span></h3></div>
     </div>
   {% endif %}
   <hr class="mb-4">
