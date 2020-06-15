@@ -20,9 +20,11 @@ def detail(request, movie_pk):
     if request.method == 'GET':
         movie = get_object_or_404(Movie, pk=movie_pk)
         reviews = movie.reviews.all().order_by('-pk')
+        genres = movie.genre.all()
         context = {
             'movie': movie,
             'reviews': reviews,
+            'genres': genres,
         }
         return render(request, 'movies/detail.html', context)
 

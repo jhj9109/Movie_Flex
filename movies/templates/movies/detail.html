@@ -18,7 +18,9 @@
       </div>
       <h5>{{ movie.title_en }} <span class="badge badge-warning">{{ movie.vote_average }}</span></h5>
       <h5>개봉 : {{ movie.release_date }}</h5>
-      <p> 장르 : {{ movie.genre }} </p> <!-- 나중에 여기만 수정하면 됨 -->
+      {% for genre in genres %}
+        <small><h5 class="badge badge-info">{{ genre.name }}</h5></small>
+      {% endfor %}
       <br>
       {% if movie.overview %}
         <h5>{{ movie.overview }}</h5>

@@ -50,9 +50,14 @@ def profile(request, username):
     User = get_user_model()
     person = get_object_or_404(User, username=username) # user != person (프로필페이지 주인)
     like_movies = person.like_movies.all()
+
+    followers = person.followers.all()
+    followings = person.followings.all()
     context = {
         'person': person,
         'like_movies': like_movies,
+        'followers': followers,
+        'followings': followings,
     }
     return render(request, 'accounts/profile.html', context)
 

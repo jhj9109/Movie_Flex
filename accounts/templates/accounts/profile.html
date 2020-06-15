@@ -3,18 +3,71 @@
 
 {% block app %}
   <h2 class="text-center">{{ person.username }} 님의 상세페이지 입니다.</h2>
+  {% if not request.user == person %}
+    {% if request.user in person.followers.all %}
+    <div class="text-center"><a href="{% url 'accounts:follow' person.username %}"><h3><span class="badge badge-warning">팔로우 취소</span></h3></a></div>
+    {% else %}
+    <div class="text-center"><a href="{% url 'accounts:follow' person.username %}"><h3><span class="badge badge-warning">팔로우</span></h3></a></div>
+    {% endif %}
+  {% endif %}
   <hr class="mb-4">
 
   <div class="d-flex">
-    <div class="mr-3">팔로잉 수: {{ person.followings.count }}명</div>
-    <div class="mr-3">팔로워 수: {{ person.followers.count }}명</div>
-    {% if not request.user == person %}
-      {% if request.user in person.followers.all %}
-      <div class="text-danger"><a href="{% url 'accounts:follow' person.username %}">팔로우 취소</a></div>
-      {% else %}
-      <div class="text-danger"><a href="{% url 'accounts:follow' person.username %}">팔로우</a></div>
-      {% endif %}
-    {% endif %}
+    <!-- 팔로잉 버튼 -->
+    <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal1">
+      팔로잉 {{ followings.count }}
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">팔로잉 목록</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- 잠깐 스톱 -->
+            {% for following in followings %}
+              <a href="{% url 'accounts:profile' following.username %}"><h5>{{ following }}</h5></a>
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 팔로우 버튼 -->
+    <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal2">
+      팔로워 {{ followers.count }}
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">팔로워 목록</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- 잠깐 스톱 -->
+            {% for follower in followers %}
+              <a href="{% url 'accounts:profile' follower.username %}"><h5>{{ follower }}</h5></a>
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <hr>
 
