@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sites', # 추가 allauth
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,15 @@ INSTALLED_APPS = [
 
     # Library
     'bootstrap4',
+    'bootstrap_pagination',
+
+    # allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.kakao',
 
     # my Apps
     'accounts',
@@ -129,3 +139,35 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1 # 이거 안쓰면 admin 사이트 접속 불가능
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': '' # 키 입력
+        }
+    },
+    'github': {
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': '' # 키 입력
+        }
+    },
+    'kakao': {
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': '' # 키 입력
+        }
+    }
+}
