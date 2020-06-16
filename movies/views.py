@@ -14,7 +14,7 @@ from . import tests
 # Movie
 @require_http_methods(['GET'])
 def index(request):
-    movies = Movie.objects.all()
+    movies = Movie.objects.all().order_by('-release_date')
     paginator = Paginator(movies, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

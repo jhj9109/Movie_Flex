@@ -8,7 +8,7 @@ API_KEY = '042b8288c71af382ae35655b0744652c'
 
 
 total_movie_list = []
-for i in range(1, 6):
+for i in range(1, 6): # 데이터 받아오는 개수 1당 => 20개
     Params = {
         'api_key': API_KEY,
         'language': 'ko',
