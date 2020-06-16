@@ -54,6 +54,10 @@ INSTALLED_APPS = [
     # my Apps
     'accounts',
     'movies',
+
+    # rest framework
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -171,3 +175,9 @@ AUTH_USER_MODEL = 'accounts.User'
 #         }
 #     }
 # }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
