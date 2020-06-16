@@ -17,10 +17,11 @@
   <div class="alert alert-dark">
     <strong><p class="text-center"> 오늘의 날씨 <img src="{{ IMG_URL }}"> : {% for genre in genre_list %}<span class="badge badge-pill badge-info ml-3">{{ genre }}</span>{% endfor %} 의 장르를 추천합니다.</p></strong>
   </div>
+  <h2 class="text-center text-white"> Recommendation ! </h2>
   <hr>
 
   <!-- carousel -->
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width: 50%; margin: auto;">
     <ol class="carousel-indicators">
       {% for reco_movie in reco_movies %}
         {% if forloop.counter0 %}
@@ -35,13 +36,13 @@
         {% if forloop.counter0 %}
           <div class="carousel-item">
             <a href="{% url 'movies:detail' reco_movie.pk %}">
-              <img src="{{ reco_movie.poster_path }}" class="d-block w-100" alt="..." style="height: 75vw;">
+              <img src="{{ reco_movie.poster_path }}" class="d-block w-100" alt="..." style="max-width: 100%; height: auto;">
             </a>
           </div>
         {% else %}
           <div class="carousel-item active">
             <a href="{% url 'movies:detail' reco_movie.pk %}">
-              <img src="{{ reco_movie.poster_path }}" class="d-block w-100" alt="..." style="height: 75vw;">
+              <img src="{{ reco_movie.poster_path }}" class="d-block w-100" alt="..." style="max-width: 100%; height: auto;">
             </a>
           </div>
         {% endif %}
@@ -60,7 +61,7 @@
 
 
   <!-- 영화 목록 -->
-  <h1 class="text-center mt-3"> 영화 목록 </h1>
+  <h1 class="text-center mt-3"> Movie List </h1>
   <hr>
   <div class="row">
   {% for movie in page_obj %}
