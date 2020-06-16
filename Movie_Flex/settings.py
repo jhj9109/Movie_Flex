@@ -55,6 +55,10 @@ INSTALLED_APPS = [
     # my Apps
     'accounts',
     'movies',
+
+    # rest framework
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -176,7 +180,15 @@ SOCIALACCOUNT_PROVIDERS = {
 #             'key': '' # 키 입력
 #         }
 #     }
+
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
 LOGIN_REDIRECT_URL = '/'
 
 

@@ -90,8 +90,10 @@
           const url = "{% url 'movies:movie_like_api' movie.pk %}"
           axios.get(url)
             .then(res => {
-              console.log(res.data.is_like_movie)
-              if (res.data.is_like_movie) {
+              console.log(res.data)
+              if (res.data.is_like_movie === -1) {
+                alert("로그인이 필요합니다.")
+              } else if (res.data.is_like_movie) {
                 this.likes++;
                 this.is_like_movie = true
               } else {
@@ -99,6 +101,7 @@
                 this.is_like_movie = false
               }
             })
+            .catch(err => console.log(err))
         }
       },
       mounted: function () {
