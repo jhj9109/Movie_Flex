@@ -10,7 +10,7 @@ class Movie(models.Model):
     title = models.CharField(max_length=100)
     title_en = models.CharField(max_length=200)
     overview = models.TextField()
-    release_date = models.CharField(max_length=50)
+    release_date = models.CharField(max_length=50, null=True) # 개봉일이 없는 데이터도 있을 수 있어 null=True
     poster_path = models.URLField(max_length=1000, blank=True)
     backdrop_path = models.URLField(max_length=1000, blank=True)
     adult = models.BooleanField()
