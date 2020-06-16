@@ -3,26 +3,42 @@ from django.test import TestCase
 import requests
 # Create your tests here.
 
+
+# http://openweathermap.org/img/wn/10d@2x.png [이미지 URL]
 # https://openweathermap.org/weather-conditions [wheather 컬럼정보]
 def get_weather():
     API_URL = f'https://api.openweathermap.org/data/2.5/weather?q=Seoul&units=metric&appid=a33f66615c22bc4a01086192ca00ac4c&lang=kr'
     res = requests.get(API_URL).json()
 
-    온도 = res['main']['temp']
-    습도 = res['main']['humidity']
-    날씨 = res['weather'][0]['main']
-    print(온도, 습도, 날씨)
-    return 온도, 습도, 날씨
+    weather = res['weather'][0]['main']
+    img = res['weather'][0]['icon']
+    IMG_URL = f'http://openweathermap.org/img/wn/{img}@2x.png'
+
+    # print('weather: ', weather)
+    # print('IMG_URL: ', IMG_URL)
+    return weather, IMG_URL
+
 
 def recommend_movie():
-    temp, h, weather = get_weather() # wheather = ['Clear', 'Clouds', 'Rain', 'Tornado', '']
-    # 덥고 습할때,,
-    if temp > 30 or h > 75:
-        return ['Fantasy', 'Horror', 'Thriller', 'Mystery']
+    weather, IMG_URL = get_weather() # wheather = ['Clear', 'Clouds', 'Rain', 'Tornado', '']
 
-    # 날씨 (맑음, 흐림, 비, 눈) => 장르 n개 => random 1개 장르 추천 => 흐린 오늘 같은날에 Action 영화어떄요? / 흐린 오늘 같은날엔 감성적인 멜로와 함께 추천합니다?
-    # 흐린 날씨의 초이스 액션! / 흐린 날씨의 초이스 멜로!
-    weather =
+    # 테스트코드 ( 날씨와 이미지 바꾸고 싶을 때 잠시 테스트용 코드 )
+    # weather = 'Clear'
+    # IMG_URL = 'http://openweathermap.org/img/wn/10n@2x.png'
+    if weather == 'Thunderstorm':
+        return ['Horror', 'Crime', 'Thriller', 'Mystery'], IMG_URL
+    elif weather == 'Drizzle':
+        return ['Drama', 'Animation', ], IMG_URL
+    elif weather == 'Rain':
+        return ['Romance', 'Music', 'Animation'], IMG_URL
+    elif weather == 'Snow':
+        return ['Fantasy', 'Family', 'Science Fiction'], IMG_URL
+    elif weather == 'Clear':
+        return ['Adventure', 'Action', 'Comedy'], IMG_URL
+    elif weather == 'Clouds':
+        return ['TV Movie', 'War'], IMG_URL
+    else: # Atmosphere
+        return ['History', 'Western', 'Documentary'], IMG_URL
 
 
 

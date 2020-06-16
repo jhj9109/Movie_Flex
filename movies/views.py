@@ -6,10 +6,10 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 
-from .models import Movie, Review, Comment
+from .models import Movie, Review, Comment, Genre
 from .forms import ReviewForm, CommentForm
+from . import tests
 
-import requests
 
 # Movie
 @require_http_methods(['GET'])
@@ -18,9 +18,22 @@ def index(request):
     paginator = Paginator(movies, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    genre_list, IMG_URL = tests.recommend_movie()
 
+    # 날씨 기반 영화 추천 부분
+    rgs = []
+    for i in range(5):
+        if i < len(genre_list): # 2 [TV MOvie, War]
+            rgs.append(get_object_or_404(Genre, name=genre_list[i]))
+        else:
+            rgs.append(get_object_or_404(Genre, name=genre_list[0]))
+    # 평점순 5개 추천
+    reco_movies = Movie.objects.filter(Q(genre=rgs[0]) | Q(genre=rgs[1]) | Q(genre=rgs[2]) | Q(genre=rgs[3]) | Q(genre=rgs[4])).order_by('-vote_average')[:5]
     context = {
         'page_obj': page_obj,
+        'genre_list': genre_list,
+        'IMG_URL': IMG_URL,
+        'reco_movies': reco_movies
     }
     return render(request, 'movies/index.html', context)
 
