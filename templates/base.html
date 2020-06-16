@@ -10,7 +10,12 @@
   <link rel="icon" href="{% static 'img/favicon.png' %}">
   <title>Movie Flex</title>
   {% bootstrap_css %}
-
+  <style>
+    body {
+      background: rgb(255,255,255);
+      background: radial-gradient(circle, rgba(255,255,255,1) 20%, rgba(0,0,0,1) 100%);
+    }
+  </style>
   {% block css %}
   {% endblock %}
 
@@ -30,8 +35,8 @@
     {% endblock %}
   </div>
 
-  <!-- 나중에 -->
-  {% comment %} {% include '_footer.html' %} {% endcomment %}
+  <!-- footer -->
+  {% include '_footer.html' %}
 
   {% block script %}
   {% endblock %}

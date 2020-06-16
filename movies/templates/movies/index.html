@@ -14,7 +14,9 @@
 
 {% block app %}
   <h1 class="text-center mt-3 badge-warning"> 날씨기반 추천 알고리즘 </h1>
-  <p class="text-center"> 오늘의 날씨 <img src="{{ IMG_URL }}"> : {% for genre in genre_list %}<span class="badge badge-pill badge-info ml-3">{{ genre }}</span>{% endfor %} 의 장르를 추천합니다.</p>
+  <div class="alert alert-dark">
+    <strong><p class="text-center"> 오늘의 날씨 <img src="{{ IMG_URL }}"> : {% for genre in genre_list %}<span class="badge badge-pill badge-info ml-3">{{ genre }}</span>{% endfor %} 의 장르를 추천합니다.</p></strong>
+  </div>
   <hr>
 
   <!-- carousel -->
