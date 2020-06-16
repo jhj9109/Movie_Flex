@@ -8,7 +8,9 @@ Django==3.0.7
 django-allauth==0.42.0
 django-bootstrap-pagination==1.7.1
 django-bootstrap4==2.0.1
+djangorestframework==3.11.0
 idna==2.9
+importlib-metadata==1.6.1
 numpy==1.18.5
 oauthlib==3.1.0
 pandas==1.0.4
@@ -22,3 +24,4 @@ six==1.15.0
 soupsieve==2.0.1
 sqlparse==0.3.1
 urllib3==1.25.9
+zipp==3.1.0
