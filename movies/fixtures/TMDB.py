@@ -1,14 +1,15 @@
 import requests
-from pprint import pprint
 import json
+from pprint import pprint
+from decouple import config
 
 TMDB_URL = 'https://api.themoviedb.org/3/movie/popular'
 BASIC_IMG_URL = 'https://image.tmdb.org/t/p/w500'
-API_KEY = '042b8288c71af382ae35655b0744652c'
+API_KEY = config('TMDB_API_KEY')
 
 
 total_movie_list = []
-for i in range(1, 6): # 데이터 받아오는 개수 1당 => 20개
+for i in range(1, 501): # 데이터 받아오는 개수 1당 => 20개
     Params = {
         'api_key': API_KEY,
         'language': 'ko',
@@ -28,7 +29,8 @@ for movie in total_movie_list:
     fields['title'] = movie['title']
     fields['title_en'] = movie['original_title']
     fields['overview'] = movie['overview']
-    fields['release_date'] = movie['release_date']
+    fields['release_date'] = movie.get('release_date') # 개봉일 없어서 KeyError 나와서 get 함수로 잠시 바꿈
+    # fields['release_date'] = movie['release_date']
 
     fields['poster_path'] = BASIC_IMG_URL + movie['poster_path']
     fields['backdrop_path'] = BASIC_IMG_URL + movie['backdrop_path']

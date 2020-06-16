@@ -36,7 +36,7 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            auth_login(request, user)
+            auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, '회원가입이 완료되었습니다.')
             return redirect('movies:index')
     form = CustomUserCreationForm()

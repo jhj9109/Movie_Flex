@@ -1,15 +1,21 @@
 {% load bootstrap4 %}
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'img/favicon.png' %}">
   <title>Movie Flex</title>
   {% bootstrap_css %}
   <style>
     body {
-background: rgb(63,94,251);
-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+
+      background: rgb(255,255,255);
+      background: radial-gradient(circle, rgba(255,255,255,1) 20%, rgba(0,0,0,1) 100%);
+      margin-bottom: 56px;
     }
   </style>
   {% block css %}
@@ -31,8 +37,8 @@ background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100
     {% endblock %}
   </div>
 
-  <!-- 나중에 -->
-  {% comment %} {% include '_footer.html' %} {% endcomment %}
+  <!-- footer -->
+  {% include '_footer.html' %}
 
   {% block script %}
   {% endblock %}
