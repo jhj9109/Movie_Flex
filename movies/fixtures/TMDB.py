@@ -1,10 +1,11 @@
 import requests
-from pprint import pprint
 import json
+from pprint import pprint
+from decouple import config
 
 TMDB_URL = 'https://api.themoviedb.org/3/movie/popular'
 BASIC_IMG_URL = 'https://image.tmdb.org/t/p/w500'
-API_KEY = '042b8288c71af382ae35655b0744652c'
+API_KEY = config('WEATHER_API_KEY')
 
 
 total_movie_list = []
