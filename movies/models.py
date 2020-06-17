@@ -7,7 +7,7 @@ class Genre(models.Model):
     name = models.CharField(max_length=50)
 
 class Movie(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     title_en = models.CharField(max_length=200)
     overview = models.TextField()
     release_date = models.CharField(max_length=50, null=True) # 개봉일이 없는 데이터도 있을 수 있어 null=True
