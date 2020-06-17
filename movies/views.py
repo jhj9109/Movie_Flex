@@ -18,9 +18,54 @@ def index(request):
     paginator = Paginator(movies, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    genre_list, IMG_URL = tests.recommend_movie()
 
-    # 날씨 기반 영화 추천 부분
+    # params = {
+    #     'code': False
+    # }
+    # genre_list, IMG_URL = tests.recommend_movie(params)
+
+    # # 날씨 기반 영화 추천 부분
+    # rgs = []
+    # for i in range(5):
+    #     if i < len(genre_list): # 2 [TV MOvie, War]
+    #         rgs.append(get_object_or_404(Genre, name=genre_list[i]))
+    #     else:
+    #         rgs.append(get_object_or_404(Genre, name=genre_list[0]))
+    # # 평점순 5개 추천
+    # reco_movies = Movie.objects.filter(Q(genre=rgs[0]) | Q(genre=rgs[1]) | Q(genre=rgs[2]) | Q(genre=rgs[3]) | Q(genre=rgs[4])).order_by('-vote_average')[:5]
+    context = {
+        'page_obj': page_obj,
+        # 'genre_list': genre_list,
+        # 'IMG_URL': IMG_URL,
+        # 'reco_movies': reco_movies
+    }
+    return render(request, 'movies/index.html', context)
+
+from rest_framework.decorators import api_view
+@api_view(['GET'])
+def get_recommend(request):
+
+    code = request.GET.get('code')
+    print(f'_____get_recommend 시작______{type(code)},  {code}')
+
+
+    # 1. lat, lon 왔는지 확인
+    if (code == "1"):
+        msg = "성공"
+        lat = request.GET.get('lat')
+        lon = request.GET.get('lon')
+        print (f'____위치정보값은 잘 받았습니다______lat:{lat}, lon:{lon}')
+        params = {
+            'lat': lat,
+            'lon': lon,
+            'code': True,
+        }
+    else:
+        params = {
+            'code': False,
+        }
+    genre_list, IMG_URL, loc_name = tests.recommend_movie(params)
+    print('날씨에따른 추천 장르를 받았습니다')
     rgs = []
     for i in range(5):
         if i < len(genre_list): # 2 [TV MOvie, War]
@@ -29,13 +74,21 @@ def index(request):
             rgs.append(get_object_or_404(Genre, name=genre_list[0]))
     # 평점순 5개 추천
     reco_movies = Movie.objects.filter(Q(genre=rgs[0]) | Q(genre=rgs[1]) | Q(genre=rgs[2]) | Q(genre=rgs[3]) | Q(genre=rgs[4])).order_by('-vote_average')[:5]
-    context = {
-        'page_obj': page_obj,
-        'genre_list': genre_list,
+    print('영화 선별을 마쳤습니다')
+    # from django.core.serializers import serialize
+    # reco_movies = serialize("json", reco_movies)
+
+    from .serializers import MovieCarouselSerializer
+    serializer = MovieCarouselSerializer(reco_movies, many=True)
+    print('시리얼라이즈 마침')
+    data = {
         'IMG_URL': IMG_URL,
-        'reco_movies': reco_movies
+        'loc_name': loc_name,
+        'genre_list': genre_list,
+        'reco_movies': serializer.data,
     }
-    return render(request, 'movies/index.html', context)
+    from rest_framework.response import Response
+    return Response(data)
 
 @require_http_methods(['GET'])
 def detail(request, movie_pk):
@@ -188,8 +241,11 @@ def movie_like(request, movie_pk):
         movie.like_users.add(request.user)
     return redirect('movies:detail', movie_pk)
 
-@login_required
+
 def movie_like_api(request, movie_pk):
+    if not request.user.is_authenticated:
+        return JsonResponse({'is_like_movie': -1})
+
     movie = get_object_or_404(Movie, pk=movie_pk)
     if movie.like_users.filter(pk=request.user.pk).exists():
         movie.like_users.remove(request.user)
@@ -197,6 +253,7 @@ def movie_like_api(request, movie_pk):
     else:
         movie.like_users.add(request.user)
         is_like_movie = True
+
     data = {
         'is_like_movie': is_like_movie,
         'count': movie.like_users.count()

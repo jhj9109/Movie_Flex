@@ -11,42 +11,47 @@
 </style>
 {% endblock %}
 
-
 {% block app %}
+
+  <button @click="getLocation">위치 정보 제공</button>
+
   <h1 class="text-center mt-3 badge-warning"> 날씨기반 추천 알고리즘 </h1>
-  <div class="alert alert-dark">
-    <strong><p class="text-center"> 오늘의 날씨 <img src="{{ IMG_URL }}"> : {% for genre in genre_list %}<span class="badge badge-pill badge-info ml-3">{{ genre }}</span>{% endfor %} 의 장르를 추천합니다.</p></strong>
-  </div>
-  <h2 class="text-center text-white"> Recommendation ! </h2>
+
+  <p class="text-center"> $[[loc_name]] 날씨 <img :src="IMG_URL"><template v-for="genre in genre_list"><span class="badge badge-pill badge-info ml-3">$[[ genre ]]</span></template> 의 장르를 추천합니다.</p>
+
   <hr>
 
   <!-- carousel -->
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width: 75%; margin: auto;">
     <ol class="carousel-indicators">
-      {% for reco_movie in reco_movies %}
-        {% if forloop.counter0 %}
-          <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}"></li>
-        {% else %}
-          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        {% endif %}
-      {% endfor %}
+      <template v-for="(rec, index) in recommends">
+        <template v-if="rec===recommends[0]">
+          <li data-target="#carouselExampleIndicators" :data-slide-to="index" class="active"></li>
+        </template>
+        <template v-else>
+            <li data-target="#carouselExampleIndicators" :data-slide-to="index"></li>
+        </template>
+      </template>
     </ol>
     <div class="carousel-inner">
-      {% for reco_movie in reco_movies %}
-        {% if forloop.counter0 %}
-          <div class="carousel-item">
-            <a href="{% url 'movies:detail' reco_movie.pk %}">
-              <img src="{{ reco_movie.poster_path }}" class="d-block w-100" alt="..." style="max-width: 100%; height: auto;">
-            </a>
-          </div>
-        {% else %}
+
+      <template v-for="rec in recommends">
+        <template v-if="rec===recommends[0]">
           <div class="carousel-item active">
-            <a href="{% url 'movies:detail' reco_movie.pk %}">
-              <img src="{{ reco_movie.poster_path }}" class="d-block w-100" alt="..." style="max-width: 100%; height: auto;">
+            <a :href=`${rec.id}/`>
+              <img :src="rec.poster_path" class="d-block w-100" alt="..." style="height: 75vw;">
             </a>
           </div>
-        {% endif %}
-      {% endfor %}
+        </template>
+        <template v-else>
+          <div class="carousel-item">
+            <a href=`${rec.id}/`>
+              <img :src="rec.poster_path" class="d-block w-100" alt="..." style="height: 75vw;">
+
+            </a>
+          </div>
+        </template>
+      </template>
 
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -73,4 +78,74 @@
   <div class="d-flex justify-content-center mt-3">
     {% bootstrap_paginate page_obj range=10 show_prev_next="false" show_first_last="true" %}
   </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      delimiters: ['$[[', ']]'],
+      data: {
+        IMG_URL: '',
+        loc_name: '',
+        genre_list: [],
+        recommends: [],
+      },
+      methods: {
+        getLocation: function () {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              //console.log('경도 위도', position.coords.latitude, position.coords.longitude)
+              //const url = "{% url 'movies:get_recommend' %}"
+              const url = "{% url 'movies:get_recommend' %}"
+              console.log('axio 요청 보내기')
+              axios.get(url, {
+                params: {
+                  lat: position.coords.latitude,
+                  lon: position.coords.longitude,
+                  code: 1,
+                }
+              })
+                .then(res => {
+                  vm.$data.IMG_URL= res.data.IMG_URL 
+                  vm.$data.loc_name= res.data.loc_name 
+                  vm.$data.genre_list = res.data.genre_list 
+                  vm.$data.recommends = res.data.reco_movies 
+                })
+                .catch(err => console.log('axios는 실패 ㅠㅠ', err))
+            }, function(err) {
+              // 유저 거부 : err.code 1
+              if (err.code === 1) {
+                console.log('유저가 위치 정보 제공을 거부하였습니다')
+                const url = "{% url 'movies:get_recommend' %}"
+                axios.get(url, {params: {code: 0}})
+                  .then(res => {
+                    vm.$data.IMG_URL= res.data.IMG_URL 
+                    vm.$data.loc_name= res.data.loc_name 
+                    vm.$data.genre_list = res.data.genre_list 
+                    vm.$data.recommends = res.data.reco_movies 
+                  })
+                  .catch(err => console.log(err.response.data))
+              } else {
+                console.log('기타 에러입니다', err)
+              }
+            }, {
+              enableHighAccuracy: true,//배터리 더 소모해서 정확한 위치 찾음
+              maximumAge: 60*60*24, // 캐싱(sec)
+              timeout: Infinity
+            });
+          } else {
+            alert('GPS를 지원하지 않습니다')
+          }
+        }
+      },
+      mounted: function() {
+        this.getLocation()
+      }
+    })
+  </script>
+  <script>
+
+    
+  </script>
 {% endblock %}
