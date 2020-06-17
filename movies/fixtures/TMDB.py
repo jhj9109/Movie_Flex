@@ -30,10 +30,16 @@ for movie in total_movie_list:
     fields['title_en'] = movie['original_title']
     fields['overview'] = movie['overview']
     fields['release_date'] = movie.get('release_date') # 개봉일 없어서 KeyError 나와서 get 함수로 잠시 바꿈
-    # fields['release_date'] = movie['release_date']
 
-    fields['poster_path'] = BASIC_IMG_URL + movie['poster_path']
-    fields['backdrop_path'] = BASIC_IMG_URL + movie['backdrop_path']
+    if movie.get('poster_path') == None:
+        fields['poster_path'] = 'https://www.ssafy.com/swp/images/sns_img.png'
+    else:
+        fields['poster_path'] = BASIC_IMG_URL + movie.get('poster_path')
+
+    if movie.get('backdrop_path') == None:
+        fields['backdrop_path'] = 'https://www.ssafy.com/swp/images/sns_img.png'
+    else:
+        fields['backdrop_path'] = BASIC_IMG_URL + movie.get('backdrop_path')
 
     fields['adult'] = movie['adult']
     fields['vote_average'] = movie['vote_average']
