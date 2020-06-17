@@ -13,16 +13,14 @@ def get_weather(data):
         lat, lon = data
         API_URL = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}'
     else:
-        # API_URL = f'https://api.openweathermap.org/data/2.5/weather?q=Seoul&units=metric&appid={API_KEY}&lang=kr'
         API_URL = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}'
+
     res = requests.get(API_URL).json()
     weather = res['weather'][0]['main']
     img = res['weather'][0]['icon']
     IMG_URL = f'http://openweathermap.org/img/wn/{img}@2x.png'
     loc_name = res['name'] #도시명
 
-    # print('weather: ', weather)
-    # print('IMG_URL: ', IMG_URL)
     return weather, IMG_URL, loc_name
 
 def recommend_movie(params):
@@ -37,6 +35,7 @@ def recommend_movie(params):
     # 테스트코드 ( 날씨와 이미지 바꾸고 싶을 때 잠시 테스트용 코드 )
     # weather = 'Clear'
     # IMG_URL = 'http://openweathermap.org/img/wn/10n@2x.png'
+
     if weather == 'Thunderstorm':
         return ['Horror', 'Crime', 'Thriller', 'Mystery'], IMG_URL, loc_name
     elif weather == 'Drizzle':

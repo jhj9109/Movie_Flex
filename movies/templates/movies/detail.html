@@ -14,23 +14,6 @@
         <i v-show="is_like_movie" @click="like" class="fas fa-heart" style="color: red; cursor: pointer;">:[[likes]]</i>
         <i v-show="!is_like_movie" @click="like" class="fas fa-heart" style="color: black; cursor: pointer;">:[[likes]]</i>
       </div>
-      <!-- 새로고침 버전
-        <div>
-        <p class="d-inline"> {{ movie.title }} </p>
-        {% if request.user in movie.like_users.all %}
-          <a href="{% url 'movies:movie_like' movie.pk %}"><i class="fas fa-heart" style="color: red;"></i></a> :{{ movie.like_users.count }}
-        {% else %}
-          <a href="{% url 'movies:movie_like' movie.pk %}"><i class="far fa-heart" style="color: red;"></i></a> :{{ movie.like_users.count }}
-        {% endif %}
-      </div>
-      -->
-      <!-- 바닐라JS 버전
-      <div>
-        <p class="d-inline"> {{ movie.title }} </p>
-        <i class="fas fa-heart fa-lg like-buttons" style="color:black; cursor:pointer;" data-id="{{ movie.pk }}"></i>
-        <span id="like-count-{{ movie.pk }}">{{ movie.like_users.all|length }}</span>
-      </div>
-      -->
 
       <h5>{{ movie.title_en }} <span class="badge badge-warning">{{ movie.vote_average }}</span></h5>
       <h5>개봉 : {{ movie.release_date }}</h5>
@@ -109,28 +92,5 @@
         this.likes = {{ movie.like_users.count }}
       }
     })
-    /* 바닐라 JS 버전
-    const likeButtonList = document.querySelectorAll('.like-buttons')
-    likeButtonList.forEach(likeButton => {
-      likeButton.addEventListener('click', e => {
-        const movieID = e.target.dataset.id
-
-        {% if user.is_authenticated %}
-        axios.get(`/movies/${movieID}/movie_like_api/`)
-          .then(res => {
-            console.log(res.data)
-            document.querySelector(`#like-count-${movieID}`).innerText = res.data.count
-            if (res.data.is_like_movie) {
-              e.target.style.color = 'crimson'
-            } else {
-              e.target.style.color = 'black'
-            }
-          })
-        {% else %}
-          alert('비로그인 사용자는 좋아요를 누를 수 없습니다.')
-        {% endif %}
-      })
-    })
-    */
   </script>
 {% endblock %}

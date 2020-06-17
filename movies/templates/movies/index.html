@@ -13,12 +13,15 @@
 
 {% block app %}
 
-  <button @click="getLocation">위치 정보 제공</button>
+  <button @click="getLocation" class="btn btn-success">위치 정보 제공</button>
 
   <h1 class="text-center mt-3 badge-warning"> 날씨기반 추천 알고리즘 </h1>
-
-  <p class="text-center"> $[[loc_name]] 날씨 <img :src="IMG_URL"><template v-for="genre in genre_list"><span class="badge badge-pill badge-info ml-3">$[[ genre ]]</span></template> 의 장르를 추천합니다.</p>
-
+  <div class="alert alert-dark">
+    <strong>
+      <p class="text-center"> $[[loc_name]] 날씨 <img :src="IMG_URL"><template v-for="genre in genre_list"><span class="badge badge-pill badge-info ml-3">$[[ genre ]]</span></template> 의 장르를 추천합니다.</p>
+    </strong>
+  </div>
+  <h2 class="text-center text-white"> Recommendation ! </h2>
   <hr>
 
   <!-- carousel -->
@@ -38,16 +41,15 @@
       <template v-for="rec in recommends">
         <template v-if="rec===recommends[0]">
           <div class="carousel-item active">
-            <a :href=`${rec.id}/`>
+            <a :href=`/movies/${rec.id}/`>
               <img :src="rec.poster_path" class="d-block w-100" alt="..." style="height: 75vw;">
             </a>
           </div>
         </template>
         <template v-else>
           <div class="carousel-item">
-            <a href=`${rec.id}/`>
+            <a :href=`/movies/${rec.id}/`>
               <img :src="rec.poster_path" class="d-block w-100" alt="..." style="height: 75vw;">
-
             </a>
           </div>
         </template>
@@ -107,10 +109,10 @@
                 }
               })
                 .then(res => {
-                  vm.$data.IMG_URL= res.data.IMG_URL 
-                  vm.$data.loc_name= res.data.loc_name 
-                  vm.$data.genre_list = res.data.genre_list 
-                  vm.$data.recommends = res.data.reco_movies 
+                  vm.$data.IMG_URL= res.data.IMG_URL
+                  vm.$data.loc_name= res.data.loc_name
+                  vm.$data.genre_list = res.data.genre_list
+                  vm.$data.recommends = res.data.reco_movies  // id, poster_path
                 })
                 .catch(err => console.log('axios는 실패 ㅠㅠ', err))
             }, function(err) {
@@ -120,10 +122,10 @@
                 const url = "{% url 'movies:get_recommend' %}"
                 axios.get(url, {params: {code: 0}})
                   .then(res => {
-                    vm.$data.IMG_URL= res.data.IMG_URL 
-                    vm.$data.loc_name= res.data.loc_name 
-                    vm.$data.genre_list = res.data.genre_list 
-                    vm.$data.recommends = res.data.reco_movies 
+                    vm.$data.IMG_URL= res.data.IMG_URL
+                    vm.$data.loc_name= res.data.loc_name
+                    vm.$data.genre_list = res.data.genre_list
+                    vm.$data.recommends = res.data.reco_movies
                   })
                   .catch(err => console.log(err.response.data))
               } else {
@@ -143,9 +145,5 @@
         this.getLocation()
       }
     })
-  </script>
-  <script>
-
-    
   </script>
 {% endblock %}
