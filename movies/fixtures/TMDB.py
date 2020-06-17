@@ -29,15 +29,21 @@ for movie in total_movie_list:
     fields['title'] = movie['title']
     fields['title_en'] = movie['original_title']
     fields['overview'] = movie['overview']
-    fields['release_date'] = movie.get('release_date') # 개봉일 없어서 KeyError 나와서 get 함수로 잠시 바꿈
+
+    # 데이터가 없는아이들은 추가안해줌
+    # 개봉일 없어서 KeyError 나와서 get 함수로 잠시 바꿈
+    if movie.get('release_date') == None:
+        continue
+    else:
+        fields['release_date'] = movie.get('release_date')
 
     if movie.get('poster_path') == None:
-        fields['poster_path'] = 'https://www.ssafy.com/swp/images/sns_img.png'
+        continue
     else:
         fields['poster_path'] = BASIC_IMG_URL + movie.get('poster_path')
 
     if movie.get('backdrop_path') == None:
-        fields['backdrop_path'] = 'https://www.ssafy.com/swp/images/sns_img.png'
+        continue
     else:
         fields['backdrop_path'] = BASIC_IMG_URL + movie.get('backdrop_path')
 
